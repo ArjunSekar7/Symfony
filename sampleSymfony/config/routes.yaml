@@ -1,0 +1,13 @@
+  # index:
+  #  path: /
+  #  controller: App\Controller\MainController::index
+
+lucky_number:
+    path:     /find
+    controller: App\Controller\MainController::lucky
+
+find_max:
+    path:       /user/max/{max}
+    controller: App\Controller\UserController::max
+    methods:    GET|HEAD
+

@@ -1,0 +1,13 @@
+App\Entity\UserForm:
+    properties:
+        email_id:
+            - Regex:
+                pattern: /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/
+                message: Invalid email
+        name:
+            - Regex:
+                pattern: /^[a-zA-Z]{2,}$/
+                message: Invalid name
+        
+        date_of_birth:
+            - GreaterThan: today

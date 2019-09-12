@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin index{% endblock %}
+
+{% block body %}
+    <h1>Admin index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>UsernameCanonical</th>
+                <th>Email</th>
+                <th>EmailCanonical</th>
+                <th>Enabled</th>
+                <th>Salt</th>
+                <th>Password</th>
+                <th>LastLogin</th>
+                <th>ConfirmationToken</th>
+                <th>PasswordRequestedAt</th>
+                <th>Roles</th>
+                <th>Id</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for admin in admins %}
+            <tr>
+                <td>{{ admin.username }}</td>
+                <td>{{ admin.usernameCanonical }}</td>
+                <td>{{ admin.email }}</td>
+                <td>{{ admin.emailCanonical }}</td>
+                <td>{{ admin.enabled ? 'Yes' : 'No' }}</td>
+                <td>{{ admin.salt }}</td>
+                <td>{{ admin.password }}</td>
+                <td>{{ admin.lastLogin ? admin.lastLogin|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ admin.confirmationToken }}</td>
+                <td>{{ admin.passwordRequestedAt ? admin.passwordRequestedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ admin.roles ? admin.roles|join(', ') : '' }}</td>
+                <td>{{ admin.id }}</td>
+                <td>
+                    <a href="{{ path('admin_show', {'id': admin.id}) }}">show</a>
+                    <a href="{{ path('admin_edit', {'id': admin.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="13">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('admin_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin{% endblock %}
+
+{% block body %}
+    <h1>Admin</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Username</th>
+                <td>{{ admin.username }}</td>
+            </tr>
+            <tr>
+                <th>UsernameCanonical</th>
+                <td>{{ admin.usernameCanonical }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ admin.email }}</td>
+            </tr>
+            <tr>
+                <th>EmailCanonical</th>
+                <td>{{ admin.emailCanonical }}</td>
+            </tr>
+            <tr>
+                <th>Enabled</th>
+                <td>{{ admin.enabled ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Salt</th>
+                <td>{{ admin.salt }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ admin.password }}</td>
+            </tr>
+            <tr>
+                <th>LastLogin</th>
+                <td>{{ admin.lastLogin ? admin.lastLogin|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>ConfirmationToken</th>
+                <td>{{ admin.confirmationToken }}</td>
+            </tr>
+            <tr>
+                <th>PasswordRequestedAt</th>
+                <td>{{ admin.passwordRequestedAt ? admin.passwordRequestedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Roles</th>
+                <td>{{ admin.roles ? admin.roles|join(', ') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Id</th>
+                <td>{{ admin.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('admin_index') }}">back to list</a>
+
+    <a href="{{ path('admin_edit', {'id': admin.id}) }}">edit</a>
+
+    {{ include('admin/_delete_form.html.twig') }}
+{% endblock %}

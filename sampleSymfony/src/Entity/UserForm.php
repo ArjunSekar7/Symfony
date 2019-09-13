@@ -75,12 +75,12 @@ class UserForm
         return $this;
     }
 
-    public function getDateOfBirth(): ?\DateTimeInterface
+    public function getBirthdate(): ?\DateTimeInterface
     {
         return $this->date_of_birth;
     }
 
-    public function setDateOfBirth(\DateTimeInterface $date_of_birth): self
+    public function setBirthdate(\DateTimeInterface $date_of_birth): self
     {
         $this->date_of_birth = $date_of_birth;
 

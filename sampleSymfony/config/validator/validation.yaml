@@ -1,13 +1,17 @@
 App\Entity\UserForm:
     properties:
+       
+        date_of_birth:
+            - Range:
+                max: now
+                maxMessage: Please provide valid BirthDate 
+
         email_id:
             - Regex:
                 pattern: /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/
-                message: Invalid email
+                message: Please provide valid email
         name:
             - Regex:
                 pattern: /^[a-zA-Z]{2,}$/
-                message: Invalid name
+                message: Please provide valid name
         
-        date_of_birth:
-            - GreaterThan: today

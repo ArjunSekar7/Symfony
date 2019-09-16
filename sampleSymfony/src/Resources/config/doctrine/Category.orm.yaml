@@ -1,0 +1,8 @@
+App\Entity\Category:
+    type: entity
+
+    oneToMany:
+        products:
+            targetEntity: App\Entity\Product
+            mappedBy: category
+

@@ -31,6 +31,12 @@ class Product
      */
     private $cost;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Catagory", inversedBy="products")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $category;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -68,6 +74,18 @@ class Product
     public function setCost(int $cost): self
     {
         $this->cost = $cost;
+
+        return $this;
+    }
+
+    public function getCategory(): ?Catagory
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Catagory $category): self
+    {
+        $this->category = $category;
 
         return $this;
     }

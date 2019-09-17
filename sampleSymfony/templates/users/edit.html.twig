@@ -1,18 +1,29 @@
 <html>
 <style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; margin-top : 100px }
-    .form-error-message { color:red; }
-    span.form-error-icon {  display: none; }
-    #form_name{ margin-left: 60px; margin-top:5px;}
-    #form_email_id { margin-left: 40px; margin-top:5px;}
-    #form_comments { margin-left: 10px; margin-top:5px;}
-    #form_country { margin-left: 35px; margin-top:5px; }
-    #form_submit { margin-left: 350px; margin-top:5px;}
+    body {  background-color : grey; }
+    .example-wrapper { background-color : white; border: 5px solid black; margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; margin-top : 100px }
+    span{  display: none; }
+    #show-error { background-color : #ff4d4d; }
+    #add_user_name{ margin-left: 60px; margin-top:5px;}
+    #add_user_email_id { margin-left: 40px; margin-top:5px;}
+    #add_user_comments { margin-left: 10px; margin-top:5px;}
+    #add_user_country { margin-left: 35px; margin-top:5px; }
+    #add_user_submit {margin-left: 330px; margin-top: 15px; background-color: black; color: white;padding: 15px 32px;text-align: center; text-decoration: none; font-size: 16px; cursor: pointer;}
+    .list{ margin-left: 700px; }
 </style>
 <body>
 
 <div class="example-wrapper">
-    <h1>User Form</h1>
+   <center> <h1>User Form</h1> </center>
+   {% if errors != null %}
+        <div id="show-error">
+        <ul>
+            {% for error in errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
         {{ form_start(form) }} 
             {{ form_widget(form) }}
         {{ form_end(form) }}

@@ -19,11 +19,11 @@ class KernelSubscriber implements EventSubscriberInterface
 
     public function showMessage()
     {
-        echo 'Hello i am Subscriber   ';
+        echo 'Hello i am Subscriber  - ';
     }
 
     public function processMessage()
     {
-        echo 'Hello i am Subscriber processing the exception  ';
+        echo 'Hello i am Subscriber processing the exception  -  ';
     }
 }

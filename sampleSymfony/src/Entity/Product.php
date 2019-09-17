@@ -17,75 +17,40 @@ class Product
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=255)
      */
-    private $product_name;
+    private $name;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      */
-    private $product_id;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $cost;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Catagory", inversedBy="products")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $category;
+    private $descripation;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getProductName(): ?string
+    public function getName(): ?string
     {
-        return $this->product_name;
+        return $this->name;
     }
 
-    public function setProductName(string $product_name): self
+    public function setName(string $name): self
     {
-        $this->product_name = $product_name;
+        $this->name = $name;
 
         return $this;
     }
 
-    public function getProductId(): ?int
+    public function getDescripation(): ?string
     {
-        return $this->product_id;
+        return $this->descripation;
     }
 
-    public function setProductId(int $product_id): self
+    public function setDescripation(string $descripation): self
     {
-        $this->product_id = $product_id;
-
-        return $this;
-    }
-
-    public function getCost(): ?int
-    {
-        return $this->cost;
-    }
-
-    public function setCost(int $cost): self
-    {
-        $this->cost = $cost;
-
-        return $this;
-    }
-
-    public function getCategory(): ?Catagory
-    {
-        return $this->category;
-    }
-
-    public function setCategory(?Catagory $category): self
-    {
-        $this->category = $category;
+        $this->descripation = $descripation;
 
         return $this;
     }

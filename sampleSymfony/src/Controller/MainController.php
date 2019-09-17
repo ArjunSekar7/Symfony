@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Ob\HighchartsBundle\Highcharts\Highchart;
 
-
 class MainController extends AbstractController
 {
     
@@ -109,28 +108,28 @@ class MainController extends AbstractController
 
     public function mail(\Swift_Mailer $mailer)
     {
-    $name = "Arjun";
-    $message = (new \Swift_Message('Hello Email'))
-        ->setFrom('nujraadream112@gmail.com')
-            ->setTo('arjun.sekar@aspiresys.com')
-            ->setBody(
-            $this->renderView(
-                'users/registration.html.twig',
-                ['name' => $name]
-            ),
-            'text/html'
-        )
-    ;
+        $name = "Arjun";
+        $message = (new \Swift_Message('Hello Email'))
+            ->setFrom('nujraadream112@gmail.com')
+                ->setTo('arjun.sekar@aspiresys.com')
+                ->setBody(
+                $this->renderView(
+                    'users/registration.html.twig',
+                    ['name' => $name]
+                ),
+                'text/html'
+            )
+        ;
 
-    if($mailer->send($message))
-    {
-        echo "success";
+        if($mailer->send($message))
+        {
+            echo "success";
+        }
+        else
+        {
+            echo "failure";
+        }
+        return new Response();
     }
-    else
-    {
-        echo "failure";
-    }
-    return new Response();
-}
 
 }

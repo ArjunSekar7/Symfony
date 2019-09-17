@@ -16,6 +16,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 
 
 class UserController extends AbstractController
@@ -24,7 +26,7 @@ class UserController extends AbstractController
      * @Route("/userLogin", name="user_login")
      */
 
-    public function login(Request $request,LoggerInterface $logger)
+    public function login(Request $request, LoggerInterface $logger)
     {
         $user = new User;
         $form = $this->createForm(UserType::class);
@@ -39,14 +41,14 @@ class UserController extends AbstractController
                 array('mail_id' => $mailId)
             );
             if ($check === null) {
-                $message ='Invalid Mail';
+                $message = 'Invalid Mail';
             } else {
                 $verifyPassword = $check->getPassword();
                 $session = new Session();
                 $session->set('mailId', $mailId);
                 $message = 'Enter valid email and password';
                 if (password_verify($password, $verifyPassword)) {
-                    $logger->info('Login as '.$mailId );
+                    $logger->info('Login as ' . $mailId);
                     $message = 'Login Successfull';
                 }
             }
@@ -61,40 +63,45 @@ class UserController extends AbstractController
      * @Route("/addUser", name="add_user")
      */
 
-    public function addUserDetails(Request $request)
+    public function addUserDetails(Request $request, ValidatorInterface $validator)
     {
         $userForm = new UserForm;
         $form = $this->createForm(AddUser::class, $userForm);
         $form->handleRequest($request);
         $flag = 0;
+        $errorList = '';
+        $errors = $validator->validate($userForm);
+        if (count($errors) > 0) {
+            $errorList = $errors;
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->getDoctrine()->getRepository(UserForm::class);
             $check = $user->findOneBy(
                 array('email_id' => $form->get('email_id')->getData())
             );
-            if($check === null){
-            $entityManager = $this->getDoctrine()->getManager();
-            $userForm->setName($form->get('name')->getData());
-            $userForm->setEmailId($form->get('email_id')->getData());
-            $userForm->setBirthdate($form->get('birthdate')->getData());
-            $userForm->setGender($form->get('gender')->getData());
-            $userForm->setComments($form->get('comments')->getData());
-            $userForm->setCountry($form->get('country')->getData());
+            if ($check === null) {
+                $entityManager = $this->getDoctrine()->getManager();
+                $userForm->setName($form->get('name')->getData());
+                $userForm->setEmailId($form->get('email_id')->getData());
+                $userForm->setBirthdate($form->get('birthdate')->getData());
+                $userForm->setGender($form->get('gender')->getData());
+                $userForm->setComments($form->get('comments')->getData());
+                $userForm->setCountry($form->get('country')->getData());
 
-            $entityManager->persist($userForm);
+                $entityManager->persist($userForm);
 
-            $entityManager->flush();
-            $flag = 2;
-            }
-            else{
+                $entityManager->flush();
+                $flag = 2;
+            } else {
                 $flag = 1;
             }
         }
-            return $this->render('users/register.html.twig', [
+        return $this->render('users/register.html.twig', [
             'form' => $form->createView(),
             'flag' => $flag,
+            'errors' => $errorList,
         ]);
-
     }
 
     /**
@@ -113,53 +120,32 @@ class UserController extends AbstractController
      * @Route("/update/{id}", name="update")
      */
 
-    public function updateAction($id,Request $request)
+    public function updateAction($id, Request $request, ValidatorInterface $validator)
     {
-        $user = new UserForm();  
+        $user = new UserForm;
         $entityManager = $this->getDoctrine()->getManager();
-        $data = $entityManager->getRepository(UserForm::class)->find($id);      
-        $form = $this->createFormBuilder($data)
-                ->add('name', TextType::class)
-                ->add('email_id', EmailType::class)
-                ->add('birthdate', BirthdayType::class, [
-                    'placeholder' => [
-                        'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
-                    ]
-                ])
-                ->add('gender',  ChoiceType::class, array(
-                    'choices' => array(
-                    'Male' => 'male',
-                    'Female' => 'female',
-                    ),
-                    'multiple' => false,
-                    'expanded' => true,
-                    'required' => true,))
-                ->add('country', ChoiceType::class, [
-                        'choices' => [
-                            'India' => 'India',
-                            'China' => 'China',
-                            'Japan'   => 'Japan',
-                            'Russia' => 'Russia',
-                            'United States' => 'United States',
-                            'Indonesia' => 'Indonesia'
-                        ]])
-                ->add('comments', TextType::class,array('required'=>false))
-                ->add('submit', SubmitType::class, ['label' => 'Update'])
-                ->getForm();
-                $form->handleRequest($request);
-                if ($form->isSubmitted() && $form->isValid()) {
-                    $user->setName($form->get('name')->getData());
-                    $user->setEmailId($form->get('email_id')->getData());
-                    $user->setBirthdate($form->get('birthdate')->getData());
-                    $user->setGender($form->get('gender')->getData());
-                    $user->setComments($form->get('comments')->getData());
-                    $user->setCountry($form->get('country')->getData());
-                    $entityManager->flush();
-                    return $this->redirectToRoute('view_user');
-                }
-                return $this->render('users/edit.html.twig', [
-                    'form' => $form->createView(),
-                ]);
-            }
+        $getUser = $entityManager->getRepository(UserForm::class)->find($id);
+        $form = $this->createForm(AddUser::class, $getUser);
+        $errors = array();
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setName($form->get('name')->getData());
+            $user->setEmailId($form->get('email_id')->getData());
+            $user->setBirthdate($form->get('birthdate')->getData());
+            $user->setGender($form->get('gender')->getData());
+            $user->setComments($form->get('comments')->getData());
+            $user->setCountry($form->get('country')->getData());
+            $entityManager->flush();
+            return $this->redirectToRoute('view_user');
+        } else {
+            foreach ($form->getErrors(true, false) as $error) {
+                $errors[] = $error->current()->getMessage();
+            }
+        }
+        return $this->render('users/edit.html.twig', [
+            'form' => $form->createView(),
+            'errors' => $errors,
+        ]);
+    }
 }

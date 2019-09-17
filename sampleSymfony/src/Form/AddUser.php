@@ -19,8 +19,7 @@ class AddUser extends AbstractType
         $builder->add('birthdate', BirthdayType::class, [
             'placeholder' => [
                 'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
-            ],
-            'attr' =>['min' => '1950-01-01','max' => '2019-12-01']
+            ]
         ]);
         $builder->add('gender',  ChoiceType::class, array(
             'choices' => array(
@@ -29,7 +28,8 @@ class AddUser extends AbstractType
             ),
             'multiple' => false,
             'expanded' => true,
-            'required' => true));
+            'required' => true,
+            ));
             $builder->add('country', ChoiceType::class, [
                 'choices' => [
                     'India' => 'India',

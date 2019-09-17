@@ -4,14 +4,14 @@ App\Entity\UserForm:
         date_of_birth:
             - Range:
                 max: now
-                maxMessage: Please provide valid BirthDate 
+                maxMessage: ' Please provide valid BirthDate' 
 
         email_id:
             - Regex:
                 pattern: /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/
-                message: Please provide valid email
+                message: ' Please provide valid Email id'
         name:
             - Regex:
                 pattern: /^[a-zA-Z]{2,}$/
-                message: Please provide valid name
+                message: ' Please provide valid Name'
         

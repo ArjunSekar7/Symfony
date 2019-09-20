@@ -1,0 +1,40 @@
+<html>
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; margin-top : 100px }
+    table {  border-collapse: collapse;  width: 100%;}
+    th, td {  text-align: left;  padding: 8px; }
+    tr:nth-child(even){ background-color: #f2f2f2 }
+    th {  background-color: #000000;  color: white;}
+</style>
+<body>
+
+<div class="example-wrapper">
+<div align="right">
+<a class = "register" href={{path('Register')}}>Register</a>
+</div>
+<center><h1> User List </h1></center>
+    <table>
+        <tr>
+         <th>NAME</th> 
+         <th>EMAIL</th>
+         <th>DATE OF BIRTH</th>
+         <th>GENDER</th>
+         <th>COUNTRY</th>
+         <th>COMMENTS</th>
+         <th>EDIT</th>
+        </tr>
+        {%for u in user%}
+        <tr>
+        <td> {{u.getName()}} </td>
+        <td>{{u.getEmailId()}}</td>
+        <td>{{u.getBirthdate() | date('Y-m-d')}}</td>      
+        <td>{{u.getGender()}}</td>
+        <td>{{u.getCountry()}}</td>
+        <td>{{u.getComments()}}</td>
+        <td> <a href="{{ path('update',{'id':u.getId()}) }}">Edit</a></td>
+        </tr>    
+        {%endfor%}    
+</table><br>
+</div>
+</body>
+</html>

@@ -17,40 +17,41 @@ class Product
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="App\Entity\SubCategory", inversedBy="product_name")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $name;
+    private $sub_category;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $descripation;
+    private $product_name;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getSubCategory(): ?SubCategory
     {
-        return $this->name;
+        return $this->sub_category;
     }
 
-    public function setName(string $name): self
+    public function setSubCategory(?SubCategory $sub_category): self
     {
-        $this->name = $name;
+        $this->sub_category = $sub_category;
 
         return $this;
     }
 
-    public function getDescripation(): ?string
+    public function getProductName(): ?string
     {
-        return $this->descripation;
+        return $this->product_name;
     }
 
-    public function setDescripation(string $descripation): self
+    public function setProductName(string $product_name): self
     {
-        $this->descripation = $descripation;
+        $this->product_name = $product_name;
 
         return $this;
     }

@@ -1,0 +1,34 @@
+{% block javascripts %} 
+<script src="http://code.jquery.com/jquery-3.3.1.min.js"  crossorigin="anonymous"></script>
+<script src="{{ asset('js/ajaxCall.js') }}"></script>
+  {% endblock %}
+<html>
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; margin-top : 100px }
+</style>
+
+<body>
+
+<div class="example-wrapper">
+    
+    <h4>Select Main-Category</h4>
+    <select id="sel_user">
+   </select> <br>
+
+<h4>Select Sub-Category</h4>
+
+   <select id="sel_user1">
+      <option value="0">- Select -</option>
+   </select><br>
+
+<h4>Select Product</h4>
+
+   <select id="sel_user2">
+      <option value="0">- Select -</option>
+   </select>
+       
+</div>
+
+
+</body>
+</html>

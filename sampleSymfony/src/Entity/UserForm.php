@@ -17,12 +17,12 @@ class UserForm
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=255)
      */
     private $email_id;
 
@@ -37,7 +37,7 @@ class UserForm
     private $gender;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text")
      */
     private $comments;
 
@@ -104,7 +104,7 @@ class UserForm
         return $this->comments;
     }
 
-    public function setComments(?string $comments): self
+    public function setComments(string $comments): self
     {
         $this->comments = $comments;
 
@@ -119,18 +119,6 @@ class UserForm
     public function setCountry(string $country): self
     {
         $this->country = $country;
-
-        return $this;
-    }
-
-    public function getDateOfBirth(): ?\DateTimeInterface
-    {
-        return $this->date_of_birth;
-    }
-
-    public function setDateOfBirth(\DateTimeInterface $date_of_birth): self
-    {
-        $this->date_of_birth = $date_of_birth;
 
         return $this;
     }

@@ -10,11 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -23,7 +18,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class UserController extends AbstractController
 {
     /**
-     * @Route("/userLogin", name="user_login")
+     * @Route("/login", name="user_login")
      */
 
     public function login(Request $request, LoggerInterface $logger)
@@ -60,7 +55,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/addUser", name="add_user")
+     * @Route("/register", name="Register")
      */
 
     public function addUserDetails(Request $request, ValidatorInterface $validator)
@@ -81,12 +76,16 @@ class UserController extends AbstractController
                 array('email_id' => $form->get('email_id')->getData())
             );
             if ($check === null) {
+                $comments = "null";
+                if($form->get('comments')->getData()){
+                    $comments = $form->get('comments')->getData();
+                }
                 $entityManager = $this->getDoctrine()->getManager();
                 $userForm->setName($form->get('name')->getData());
                 $userForm->setEmailId($form->get('email_id')->getData());
                 $userForm->setBirthdate($form->get('birthdate')->getData());
                 $userForm->setGender($form->get('gender')->getData());
-                $userForm->setComments($form->get('comments')->getData());
+                $userForm->setComments($comments);
                 $userForm->setCountry($form->get('country')->getData());
 
                 $entityManager->persist($userForm);
@@ -140,7 +139,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('view_user');
         } else {
             foreach ($form->getErrors(true, false) as $error) {
-                $errors[] = $error->current()->getMessage();
+                $errors[] = $error->getMessage();
             }
         }
         return $this->render('users/edit.html.twig', [

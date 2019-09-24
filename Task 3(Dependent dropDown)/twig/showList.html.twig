@@ -1,6 +1,7 @@
 {% block javascripts %} 
 <script src="http://code.jquery.com/jquery-3.3.1.min.js"  crossorigin="anonymous"></script>
 <script src="{{ asset('js/ajaxCall.js') }}"></script>
+<script src="{{ asset('js/getList.js') }}"></script>
   {% endblock %}
 <html>
 <style>
@@ -11,19 +12,20 @@
 
 <div class="example-wrapper">
     
-    <h4>Select Main-Category</h4>
-    <select id="sel_user">
-   </select> <br>
+<p>Select Main-Category</p>
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+    {{ form_end(form) }}
+    
+<p>Select Sub-Category</p>
 
-<h4>Select Sub-Category</h4>
-
-   <select id="sel_user1">
+   <select id="subCategory">
       <option value="0">- Select -</option>
-   </select><br>
+   </select>
 
-<h4>Select Product</h4>
+<p>Select Product</p>
 
-   <select id="sel_user2">
+   <select id="product">
       <option value="0">- Select -</option>
    </select>
        

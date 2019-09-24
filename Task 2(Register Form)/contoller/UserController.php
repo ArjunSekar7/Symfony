@@ -64,12 +64,7 @@ class UserController extends AbstractController
         $form = $this->createForm(AddUser::class, $userForm);
         $form->handleRequest($request);
         $flag = 0;
-        $errorList = '';
-        $errors = $validator->validate($userForm);
-        if (count($errors) > 0) {
-            $errorList = $errors;
-        }
-
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $this->getDoctrine()->getRepository(UserForm::class);
             $check = $user->findOneBy(
@@ -99,7 +94,6 @@ class UserController extends AbstractController
         return $this->render('users/register.html.twig', [
             'form' => $form->createView(),
             'flag' => $flag,
-            'errors' => $errorList,
         ]);
     }
 
@@ -119,13 +113,12 @@ class UserController extends AbstractController
      * @Route("/update/{id}", name="update")
      */
 
-    public function updateAction($id, Request $request, ValidatorInterface $validator)
+    public function updateAction($id, Request $request,ValidatorInterface $validator)
     {
         $user = new UserForm;
         $entityManager = $this->getDoctrine()->getManager();
         $getUser = $entityManager->getRepository(UserForm::class)->find($id);
         $form = $this->createForm(AddUser::class, $getUser);
-        $errors = array();
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -137,14 +130,10 @@ class UserController extends AbstractController
             $user->setCountry($form->get('country')->getData());
             $entityManager->flush();
             return $this->redirectToRoute('view_user');
-        } else {
-            foreach ($form->getErrors(true, false) as $error) {
-                $errors[] = $error->getMessage();
-            }
-        }
+        } 
         return $this->render('users/edit.html.twig', [
             'form' => $form->createView(),
-            'errors' => $errors,
         ]);
     }
 }
+

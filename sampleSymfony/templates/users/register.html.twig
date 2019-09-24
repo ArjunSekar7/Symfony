@@ -2,14 +2,15 @@
 <style>
     body {  background-color : grey; }
     .example-wrapper { background-color : white; border: 5px solid black; margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; margin-top : 100px }
-    span { display: none; }
-    #show-error { background-color : #ff4d4d; }
-    #add_user_name{ margin-left: 60px; margin-top:5px;}
-    #add_user_email_id { margin-left: 40px; margin-top:5px;}
-    #add_user_comments { margin-left: 10px; margin-top:5px;}
-    #add_user_country { margin-left: 35px; margin-top:5px; }
+    ul { display: none; }
+    #add_user_name{ margin-left: 60px; margin-top:10px;}
+    #add_user_email_id { margin-left: 40px; margin-top:15px;}
+    #add_user_comments { margin-left: 10px; margin-top:15px;}
+    #add_user_country { margin-left: 35px; margin-top:15px; }
     #add_user_submit {margin-left: 330px; margin-top: 15px; background-color: black; color: white;padding: 15px 32px;text-align: center; text-decoration: none; font-size: 16px; cursor: pointer;}
     .list{ margin-left: 700px; }
+    #add_user_birthdate_year{ margin-left:110px; margin-bottom:-20px;}
+    #add_user_gender { margin-left:100px; margin-top:0px; }
 </style>
 <body>
 
@@ -17,19 +18,16 @@
     <center><h1>Registration Form</h1></center>
         {% if flag == 1 %}
            <h3 style="color:red;"> Email already Exist </h3>
-        {% elseif flag ==2 %}
+        {% endif %}
+        
+        {% if flag ==2 %}
             <h3 style="color:green;"> Registered Successfully </h3>
-        {% else %}
         {% endif %}
-        {% if errors != null %}
-        <div id="show-error">
-        <ul>
-            {% for error in errors %}
-                <li>{{ error.message }}</li>
-            {% endfor %}
-            </ul>
-        </div>
-        {% endif %}
+
+        {% for error in form.vars.errors.form.getErrors(true) %}
+             <p style="color:red;"> * {{ error.message }}</p>
+       {% endfor %}
+      
         {{ form(form) }}
 
 

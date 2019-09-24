@@ -119,7 +119,7 @@ class UserController extends AbstractController
      * @Route("/update/{id}", name="update")
      */
 
-    public function updateAction($id, Request $request, ValidatorInterface $validator)
+    public function updateAction($id, Request $request,ValidatorInterface $validator)
     {
         $user = new UserForm;
         $entityManager = $this->getDoctrine()->getManager();
@@ -138,9 +138,7 @@ class UserController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('view_user');
         } else {
-            foreach ($form->getErrors(true, false) as $error) {
-                $errors[] = $error->getMessage();
-            }
+            
         }
         return $this->render('users/edit.html.twig', [
             'form' => $form->createView(),

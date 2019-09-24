@@ -27,10 +27,8 @@ class Category extends AbstractType
                 'choice_label'=>function(MainCategory $mainCategory) {
                 return sprintf('%s', $mainCategory->getName());
                 },
-                'label' => 'Select Main-Category',
+                'label' => false,
                 ]);
-                       
-            $builder->add('submit',SubmitType::class);
     }
 
     

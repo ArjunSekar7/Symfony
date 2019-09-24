@@ -15,6 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Ob\HighchartsBundle\Highcharts\Highchart;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+
 class MainController extends AbstractController
 {
 
@@ -140,31 +142,13 @@ class MainController extends AbstractController
 
     public function getMainCategory(Request $request)
     {
-        $mainCategory = new MainCategory;
-        $mainCategory = $this->getDoctrine()->getRepository(MainCategory::class)->findAll();
 
-        if ($request->isXmlHttpRequest()) {
+        $form = $this->createForm(Category::class);
+        $form->handleRequest($request);
 
-            $jsonData = array();
-            $idx = 0;
-            $temp = array(
-                'id' => 0,
-                'name' => "All"
-            );
-            $jsonData[$idx++] = $temp;
-            foreach ($mainCategory as $mc) {
-                $temp = array(
-
-                    'id' => $mc->getId(),
-                    'name' => $mc
-                        ->getName()
-                );
-                $jsonData[$idx++] = $temp;
-            }
-            return new JsonResponse($jsonData);
-        } else {
-            return $this->render('main/showList.html.twig');
-        }
+        return $this->render('main/showList.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
@@ -176,26 +160,17 @@ class MainController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         if ($request->isXmlHttpRequest()) {
 
-            $search = $request->request->get('data');
-            $templateRepository = $entityManager->getRepository(SubCategory::class);
-            $template = $templateRepository->findAll();
+            $search = $request->request->get('id');
+
+            $template = $entityManager->getRepository(SubCategory::class)->findBy(array(
+                'mainCategory' => $search
+            ));
             $idx = 0;
             foreach ($template as $mc) {
-                $checkValue = $mc->getMainCategory()->getId();
-                if ($checkValue == $search) {
-                    $temp = array(
-                        'id' => $mc->getId(),
-                        'name' => $mc->getSubCategoryName()
-                    );
-                    $jsonData[$idx++] = $temp;
-                }
-                if ($search == 0) {
-                    $temp = array(
-                        'id' => $mc->getId(),
-                        'name' => $mc->getSubCategoryName()
-                    );
-                    $jsonData[$idx++] = $temp;
-                }
+                $jsonData[$idx++] = array(
+                    'id' => $mc->getId(),
+                    'name' => $mc->getSubCategoryName()
+                );
             }
             return new JsonResponse($jsonData);
         } else {
@@ -210,25 +185,65 @@ class MainController extends AbstractController
     public function getproduct(Request $request)
     {
         $entityManager = $this->getDoctrine()->getManager();
-        if ($request->isXmlHttpRequest()) {
 
-            $search = $request->request->get('data');
-            $templateRepository = $entityManager->getRepository(Product::class);
-            $template = $templateRepository->findAll();
+        if ($request->isXmlHttpRequest()) {
+            $search = $request->request->get('id');
+
+            $template = $entityManager->getRepository(Product::class)->findBy(array(
+                'sub_category' => $search
+            ));
+
             $idx = 0;
             foreach ($template as $mc) {
-                $checkValue = $mc->getSubCategory()->getId();
-                if ($checkValue == $search) {
-                    $temp = array(
-                        'id' => $mc->getId(),
-                        'name' => $mc->getProductName()
-                    );
-                    $jsonData[$idx++] = $temp;
-                }
+                $jsonData[$idx++] = array(
+                    'id' => $mc->getId(),
+                    'name' => $mc->getProductName()
+                );
             }
             return new JsonResponse($jsonData);
         } else {
             return $this->render('main/showList.html.twig');
         }
+    }
+
+    /**
+     * @Route("/cache",name="store_cache")
+     */
+
+    public function cache()
+    {
+        $cachePool = new FilesystemAdapter('', 0, 'cache');
+
+        $demoString = $cachePool->getItem('demo');
+        if ($demoString->isHit()) {
+            $demoString->set('hello world!!!!!!!');
+            $cachePool->save($demoString);
+        }
+
+        if ($cachePool->hasItem('demo')) {
+            $demoString = $cachePool->getItem('demo');
+            echo $demoString->get();
+            echo "\n";
+        }
+
+        //$cachePool->clear();
+
+        if (!$cachePool->hasItem('demo')) {
+            echo "The cache entry demo_string was deleted successfully!\n";
+        }
+
+        $demoOne = $cachePool->getItem('demo_array');
+        if (!$demoOne->isHit()) {
+            $demoOne->set(array("one", "two", "three"));
+            $cachePool->save($demoOne);
+        }
+
+        if ($cachePool->hasItem('demo_array')) {
+            $demoOne = $cachePool->getItem('demo_array');
+            var_dump($demoOne->get());
+            echo "\n";
+        }
+
+        return new Response();
     }
 }

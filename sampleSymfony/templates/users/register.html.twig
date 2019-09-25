@@ -19,7 +19,7 @@
         {% if flag == 1 %}
            <h3 style="color:red;"> Email already Exist </h3>
         {% endif %}
-        
+
         {% if flag ==2 %}
             <h3 style="color:green;"> Registered Successfully </h3>
         {% endif %}
@@ -29,8 +29,7 @@
        {% endfor %}
       
         {{ form(form) }}
-
-
+        
         <a class="list" href={{path('view_user')}}>View List</a>
 </div>
     

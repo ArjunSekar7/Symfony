@@ -12,22 +12,22 @@
 
 <div class="example-wrapper">
     
-<p>Select Main-Category</p>
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-    {{ form_end(form) }}
+    <p>Select Main-Category</p>
+    {{ form_start(mainCategoryform) }}
+      {{ form_widget(mainCategoryform) }}
+    {{ form_end(mainCategoryform) }}
+
+    <p>Select Sub-Category</p>
+    {{ form_start(subCategoryform) }}
+      {{ form_widget(subCategoryform) }}
+    {{ form_end(subCategoryform) }}
+
+    <p>Select Product</p>
+    {{ form_start(productForm) }}
+      {{ form_widget(productForm) }}
+    {{ form_end(productForm) }}
     
-<p>Select Sub-Category</p>
 
-   <select id="subCategory">
-      <option value="0">- Select -</option>
-   </select>
-
-<p>Select Product</p>
-
-   <select id="product">
-      <option value="0">- Select -</option>
-   </select>
        
 </div>
 

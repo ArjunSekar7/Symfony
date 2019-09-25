@@ -2,16 +2,19 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
+
 use App\Entity\MainCategory;
 use App\Entity\Product;
 use App\Entity\SubCategory;
 use App\Form\Category;
+use App\Form\ProductType;
+use App\Form\SubCategoryType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 class MainController extends AbstractController
 {
@@ -22,31 +25,20 @@ class MainController extends AbstractController
 
     public function getMainCategory(Request $request)
     {
-        $mainCategory = new MainCategory;
-        $mainCategory = $this->getDoctrine()->getRepository(MainCategory::class)->findAll();
+        $mainCategoryform = $this->createForm(Category::class);
+        $mainCategoryform->handleRequest($request);
 
-        if ($request->isXmlHttpRequest()) {
+        $subCategoryform = $this->createForm(SubCategoryType::class);
+        $subCategoryform->handleRequest($request);
 
-            $jsonData = array();
-            $idx = 0;
-            $temp = array(
-                'id' => 0,
-                'name' => "All"
-            );
-            $jsonData[$idx++] = $temp;
-            foreach ($mainCategory as $mc) {
-                $temp = array(
+        $productForm = $this->createForm(ProductType::class);
+        $productForm->handleRequest($request);
 
-                    'id' => $mc->getId(),
-                    'name' => $mc
-                        ->getName()
-                );
-                $jsonData[$idx++] = $temp;
-            }
-            return new JsonResponse($jsonData);
-        } else {
-            return $this->render('main/showList.html.twig');
-        }
+        return $this->render('main/showList.html.twig', [
+            'mainCategoryform' => $mainCategoryform->createView(),
+            'subCategoryform' => $subCategoryform->createView(),
+            'productForm' => $productForm->createView(),
+        ]);
     }
 
     /**
@@ -58,26 +50,17 @@ class MainController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         if ($request->isXmlHttpRequest()) {
 
-            $search = $request->request->get('data');
-            $templateRepository = $entityManager->getRepository(SubCategory::class);
-            $template = $templateRepository->findAll();
+            $search = $request->request->get('id');
+
+            $template = $entityManager->getRepository(SubCategory::class)->findBy(array(
+                'mainCategory' => $search
+            ));
             $idx = 0;
             foreach ($template as $mc) {
-                $checkValue = $mc->getMainCategory()->getId();
-                if ($checkValue == $search) {
-                    $temp = array(
-                        'id' => $mc->getId(),
-                        'name' => $mc->getSubCategoryName()
-                    );
-                    $jsonData[$idx++] = $temp;
-                }
-                if ($search == 0) {
-                    $temp = array(
-                        'id' => $mc->getId(),
-                        'name' => $mc->getSubCategoryName()
-                    );
-                    $jsonData[$idx++] = $temp;
-                }
+                $jsonData[$idx++] = array(
+                    'id' => $mc->getId(),
+                    'name' => $mc->getSubCategoryName()
+                );
             }
             return new JsonResponse($jsonData);
         } else {
@@ -92,25 +75,25 @@ class MainController extends AbstractController
     public function getproduct(Request $request)
     {
         $entityManager = $this->getDoctrine()->getManager();
-        if ($request->isXmlHttpRequest()) {
 
-            $search = $request->request->get('data');
-            $templateRepository = $entityManager->getRepository(Product::class);
-            $template = $templateRepository->findAll();
+        if ($request->isXmlHttpRequest()) {
+            $search = $request->request->get('id');
+
+            $template = $entityManager->getRepository(Product::class)->findBy(array(
+                'sub_category' => $search
+            ));
+
             $idx = 0;
             foreach ($template as $mc) {
-                $checkValue = $mc->getSubCategory()->getId();
-                if ($checkValue == $search) {
-                    $temp = array(
-                        'id' => $mc->getId(),
-                        'name' => $mc->getProductName()
-                    );
-                    $jsonData[$idx++] = $temp;
-                }
+                $jsonData[$idx++] = array(
+                    'id' => $mc->getId(),
+                    'name' => $mc->getProductName()
+                );
             }
             return new JsonResponse($jsonData);
         } else {
             return $this->render('main/showList.html.twig');
         }
     }
+
 }

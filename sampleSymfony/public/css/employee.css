@@ -1,0 +1,12 @@
+table {  border-collapse: collapse;  width: 25%;}
+th, td {  text-align: left;  padding: 8px; }
+tr:nth-child(even){ background-color: #f2f2f2 }
+th {  background-color: #e73e1a;  color: white;}
+#employee_name { margin-left:20px; margin-bottom: 20px;}
+#project_name { margin-left:20px; margin-bottom: 20px; }
+.display { margin-top: 50 px; margin-left: 550px;}
+.example-wrapper { 
+    margin:10px;
+    float:left; 
+    margin :10px;
+}

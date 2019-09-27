@@ -10,87 +10,13 @@ use App\Form\Category;
 use App\Form\ProductType;
 use App\Form\SubCategoryType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 use Ob\HighchartsBundle\Highcharts\Highchart;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
-
 class MainController extends AbstractController
 {
-
-    /**
-     * @Route("/main", name="main")
-     */
-
-    public function index()
-    {
-        /* $session = new Session();
-        $name = $session->get('name1');
-        echo $name;
-        return new Response();*/
-        return $this->render('main/home.html.twig');
-    }
-
-    /**
-     * @Route("/lucky",name="luckyNumber")
-     */
-
-    public function lucky()
-    {
-        $num = random_int(0, 10);
-        //print_r($this->renderView('main/home.html.twig',['var'=>$num]));
-        return $this->render('main/home.html.twig', ['var' => $num]);
-        //return new Response();
-    }
-
-    /**
-     * @Route("/userss",name="user")
-     */
-
-    public function display(): Response
-    {
-        $entityManager = $this->getDoctrine()->getManager();
-
-        $user = new User();
-        $user->setName('vijay');
-        $user->setMailId('vijau.vijay@aspiresys.com');
-
-        $entityManager->persist($user);
-
-        $entityManager->flush();
-
-        return new Response('Saved new product with id ' . $user->getId());
-    }
-
-    /**
-     * @Route("/display", name="displayUser")
-     */
-
-    public function displayAction()
-    {
-        //$repository = $this->getDoctrine()->getRepository(User::class)->findAll();
-        //print_r($repository);
-        //throw new \Exception('Something went wrong!');
-        $session = new Session();
-        $session->set('name1', 'Arjun1');
-        //$request = new Request();
-        //$request->server->get('HTTP_HOST');
-        //$request->request->get('user');
-        //print_r($request);
-        /*$routeName = $request->attributes->get('displayUser');
-        print_r($routeName);*/
-        //return $this->redirectToRoute('main');
-        return new Response();
-        //return $this->render('sample/create.html.twig', array('data' => $data));
-    }
-
-    /**
-     * @Route("/chart",name="chart")
-     */
 
     public function chart()
     {
@@ -109,12 +35,7 @@ class MainController extends AbstractController
         return $this->render('main/chart.html.twig', array(
             'chart' => $ob
         ));
-        //return new Response();
     }
-
-    /**
-     * @Route("/mail",name="mail")
-     */
 
     public function mail(\Swift_Mailer $mailer)
     {
@@ -138,10 +59,6 @@ class MainController extends AbstractController
         return new Response();
     }
 
-    /**
-     * @Route("/getMainCategory",name="getMainCategory")
-     */
-
     public function getMainCategory(Request $request)
     {
         $mainCategoryform = $this->createForm(Category::class);
@@ -160,10 +77,6 @@ class MainController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/getSubCategory",name="getSubCategory")
-     */
-
     public function getSubCategory(Request $request)
     {
         $entityManager = $this->getDoctrine()->getManager();
@@ -171,9 +84,21 @@ class MainController extends AbstractController
 
             $search = $request->request->get('id');
 
-            $template = $entityManager->getRepository(SubCategory::class)->findBy(array(
+            if ($entityManager->getRepository(SubCategory::class)->findBy(array(
                 'mainCategory' => $search
-            ));
+            ))) {
+                $template = $entityManager->getRepository(SubCategory::class)->findBy(array(
+                    'mainCategory' => $search
+                ));
+            } else {
+                return new JsonResponse(
+                    array(
+                        'status' => 'error',
+                        'message' => 'Invaild Id passed'
+                    ),
+                    500
+                );
+            }
             $idx = 0;
             foreach ($template as $mc) {
                 $jsonData[$idx++] = array(
@@ -181,15 +106,23 @@ class MainController extends AbstractController
                     'name' => $mc->getSubCategoryName()
                 );
             }
-            return new JsonResponse($jsonData);
+            return new JsonResponse(
+                array(
+                    'status' => 'OK',
+                    'message' => $jsonData
+                ),
+                200
+            );
         } else {
-            return $this->render('main/showList.html.twig');
+            return new JsonResponse(
+                array(
+                    'status' => 'error',
+                    'message' => 'Invalid request'
+                ),
+                500
+            );
         }
     }
-
-    /**
-     * @Route("/getproduct",name="getProducts")
-     */
 
     public function getproduct(Request $request)
     {
@@ -198,9 +131,21 @@ class MainController extends AbstractController
         if ($request->isXmlHttpRequest()) {
             $search = $request->request->get('id');
 
-            $template = $entityManager->getRepository(Product::class)->findBy(array(
+            if ($entityManager->getRepository(Product::class)->findBy(array(
                 'sub_category' => $search
-            ));
+            ))) {
+                $template = $entityManager->getRepository(Product::class)->findBy(array(
+                    'sub_category' => $search
+                ));
+            } else {
+                return new JsonResponse(
+                    array(
+                        'status' => 'error',
+                        'message' => 'Invaild Id passed'
+                    ),
+                    500
+                );
+            };;
 
             $idx = 0;
             foreach ($template as $mc) {
@@ -209,50 +154,21 @@ class MainController extends AbstractController
                     'name' => $mc->getProductName()
                 );
             }
-            return new JsonResponse($jsonData);
+            return new JsonResponse(
+                array(
+                    'status' => 'OK',
+                    'message' => $jsonData
+                ),
+                200
+            );
         } else {
-            return $this->render('main/showList.html.twig');
+            return new JsonResponse(
+                array(
+                    'status' => 'error',
+                    'message' => 'Invalid request'
+                ),
+                500
+            );
         }
-    }
-
-    /**
-     * @Route("/cache",name="store_cache")
-     */
-
-    public function cache()
-    {
-        $cachePool = new FilesystemAdapter('', 0, 'cache');
-
-        $demoString = $cachePool->getItem('demo');
-        if ($demoString->isHit()) {
-            $demoString->set('hello world!!!!!!!');
-            $cachePool->save($demoString);
-        }
-
-        if ($cachePool->hasItem('demo')) {
-            $demoString = $cachePool->getItem('demo');
-            echo $demoString->get();
-            echo "\n";
-        }
-
-        //$cachePool->clear();
-
-        if (!$cachePool->hasItem('demo')) {
-            echo "The cache entry demo_string was deleted successfully!\n";
-        }
-
-        $demoOne = $cachePool->getItem('demo_array');
-        if (!$demoOne->isHit()) {
-            $demoOne->set(array("one", "two", "three"));
-            $cachePool->save($demoOne);
-        }
-
-        if ($cachePool->hasItem('demo_array')) {
-            $demoOne = $cachePool->getItem('demo_array');
-            var_dump($demoOne->get());
-            echo "\n";
-        }
-
-        return new Response();
     }
 }

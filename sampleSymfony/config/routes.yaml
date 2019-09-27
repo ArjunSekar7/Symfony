@@ -11,3 +11,42 @@ find_max:
     controller: App\Controller\UserController::max
     methods:    GET|HEAD
 
+login:
+    path:       /userLogin
+    controller: App\Controller\UserController::login
+
+register:
+    path:       /userRegister  
+    controller: App\Controller\UserController::addUserDetails
+
+view_user:
+    path:       /viewUser  
+    controller: App\Controller\UserController::viewUser
+
+update:
+    path:       /update/{id} 
+    controller: App\Controller\UserController::updateAction
+
+list:
+    path:       /project 
+    controller: App\Controller\UserController::userRegister
+
+getMainCategory:
+    path:       /category 
+    controller: App\Controller\MainController::getMainCategory
+
+getSubCategory:
+    path:       /getSubCategory 
+    controller: App\Controller\MainController::getSubCategory
+
+getProducts:
+    path:       /getproduct 
+    controller: App\Controller\MainController::getproduct
+
+chart:
+    path:       /chart 
+    controller: App\Controller\MainController::chart
+
+mail:
+    path:       /mail 
+    controller: App\Controller\MainController::mail

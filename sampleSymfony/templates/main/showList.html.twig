@@ -1,36 +1,30 @@
-{% block javascripts %} 
-<script src="http://code.jquery.com/jquery-3.3.1.min.js"  crossorigin="anonymous"></script>
-<script src="{{ asset('js/ajaxCall.js') }}"></script>
-<script src="{{ asset('js/getList.js') }}"></script>
-  {% endblock %}
-<html>
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; margin-top : 100px }
-</style>
+{% block javascripts %}
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script src="{{ asset('js/ajaxCall.js') }}"></script>
+    <script src="{{ asset('js/getList.js') }}"></script>
+{% endblock %}
 
-<body>
+{% block stylesheets %}
+<link href="{{ asset('css/category.css') }}" rel="stylesheet"/>
+{%endblock%}
+
 
 <div class="example-wrapper">
-    
+
     <p>Select Main-Category</p>
     {{ form_start(mainCategoryform) }}
-      {{ form_widget(mainCategoryform) }}
+    {{ form_widget(mainCategoryform) }}
     {{ form_end(mainCategoryform) }}
 
     <p>Select Sub-Category</p>
     {{ form_start(subCategoryform) }}
-      {{ form_widget(subCategoryform) }}
+    {{ form_widget(subCategoryform) }}
     {{ form_end(subCategoryform) }}
 
     <p>Select Product</p>
     {{ form_start(productForm) }}
-      {{ form_widget(productForm) }}
+    {{ form_widget(productForm) }}
     {{ form_end(productForm) }}
-    
 
-       
+
 </div>
-
-
-</body>
-</html>

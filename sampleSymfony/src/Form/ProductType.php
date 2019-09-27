@@ -23,7 +23,7 @@ class ProductType extends AbstractType
         $builder
             ->add('product_name', ChoiceType::class, array(
                 'choices' => array(
-                  'Select' => 'select',
+                  'Select' => 0,
                 ),
                 'required' => true,
                 'label' => false,

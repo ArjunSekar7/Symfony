@@ -24,7 +24,7 @@ class SubCategoryType extends AbstractType
         $builder
             ->add('sub_category_name', ChoiceType::class, array(
                 'choices' => array(
-                  'Select' => 'select',
+                  'Select' => 0,
                 ),
                 'required' => true,
                 'label' => false,

@@ -1,0 +1,45 @@
+{% block stylesheets %}
+<link href="{{ asset('css/employee.css') }}" rel="stylesheet"/>
+{%endblock%}
+
+<div class="example-wrapper">
+    {{ form(employeeform) }}
+        {{ form(projectform) }}
+        </div>
+
+        <div class="display">
+            {% if type == 'employee' %}
+                <h3>Employee Name: {{data.getName() }}
+                </h3>
+                <table>
+                    <tr>
+                        <th>Working Projects
+                        </th>
+                    </tr>
+                    {% for obj in data.getProjectName() %}
+                        <tr>
+                            <td>{{obj.getName()}}</td>
+                        </tr>
+                        <tr>
+                        {% endfor %}
+                    </table>
+                {% endif %}
+
+                {% if type == 'project' %}
+                    <h3>Project Name: {{data.getName() }}
+                    </h3>
+                    <table>
+                        <tr>
+                            <th>Employees Name
+                            </th>
+                        </tr>
+                        {% for obj in data.getEmployee() %}
+                            <tr>
+                                <td>{{obj.getName()}}</td>
+                            </tr>
+                            <tr>
+                            {% endfor %}
+                        </table>
+                    {% endif %}
+                </div>
+

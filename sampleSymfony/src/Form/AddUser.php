@@ -14,21 +14,28 @@ class AddUser extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('name', TextType::class);
-        $builder->add('email_id', EmailType::class);
+        $builder->add('name', TextType::class,[
+            'label' => 'Name* '
+        ]);
+        $builder->add('email_id', EmailType::class,[
+            'label' => 'Email_Id*'
+        ]);
         $builder->add('birthdate', BirthdayType::class, [
             'placeholder' => [
                 'year' => 'Year', 'month' => 'Month', 'day' => 'Day',
-            ]
+                
+            ],
+            'label' => 'Birthdate*'
         ]);
         $builder->add('gender',  ChoiceType::class, array(
             'choices' => array(
-              'Male' => 'male',
-              'Female' => 'female',
+              'Male' => 'Male',
+              'Female' => 'Female',
             ),
             'multiple' => false,
             'expanded' => true,
             'required' => true,
+            'label' => 'Gender*'
             ));
             $builder->add('country', ChoiceType::class, [
                 'choices' => [
@@ -38,9 +45,10 @@ class AddUser extends AbstractType
                     'Russia' => 'Russia',
                     'United States' => 'United States',
                     'Indonesia' => 'Indonesia'
-                ]]);
+                ],
+                'label' => 'Country*'
+                ]);
         $builder->add('comments',TextType::class,array('required' => false));
         $builder->add('submit',SubmitType::class);
-        ;
     }
 }

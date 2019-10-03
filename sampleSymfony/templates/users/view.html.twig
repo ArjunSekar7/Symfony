@@ -5,12 +5,14 @@
     th, td {  text-align: left;  padding: 8px; }
     tr:nth-child(even){ background-color: #f2f2f2 }
     th {  background-color: #000000;  color: white;}
+    ul#horizontal-list {min-width: 696px;list-style: none;padding-top: 20px;}
+    ul#horizontal-list li {display: inline;}
+    .page{ margin-left:300px; }
 </style>
 <body>
 
 <div class="example-wrapper">
 <div align="right">
-<a class = "register" href={{path('register')}}>Register</a>
 </div>
 <center><h1> User List </h1></center>
     <table>
@@ -20,21 +22,38 @@
          <th>DATE OF BIRTH</th>
          <th>GENDER</th>
          <th>COUNTRY</th>
-         <th>COMMENTS</th>
          <th>EDIT</th>
         </tr>
         {%for u in user%}
         <tr>
-        <td> {{u.getName()}} </td>
+        <td> {{u.getName()|capitalize}} </td>
         <td>{{u.getEmailId()}}</td>
-        <td>{{u.getBirthdate() | date('Y-m-d')}}</td>      
+        <td>{{u.getBirthdate() | date('d-M-Y')}}</td>      
         <td>{{u.getGender()}}</td>
         <td>{{u.getCountry()}}</td>
-        <td>{{u.getComments()}}</td>
         <td> <a href="{{ path('update',{'id':u.getId()}) }}">Edit</a></td>
         </tr>    
         {%endfor%}    
 </table><br>
+<div class="page">
+{% if maxPages > 1 %}
+<ul id="horizontal-list">
+    <li {{ thisPage == 1 ? 'class="disabled"' }}>
+        <a href="{{ path('userlist', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+    </li>
+
+    {% for i in 1..maxPages %}
+    <li {{ thisPage == i ? 'class="active"' }}>
+    <a href="{{ path('userlist', {page: i}) }}">{{ i }}</a>
+    </li>
+    {% endfor %}
+
+    <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+        <a href="{{ path('userlist', {page: thisPage <= maxPages ? thisPage : thisPage}) }}">»</a>
+    </li>
+</ul>
+{% endif %}
+</div>
 </div>
 </body>
 </html>

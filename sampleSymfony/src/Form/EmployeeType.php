@@ -22,10 +22,10 @@ class EmployeeType extends AbstractType
                 'expanded' => false,
                 'multiple' => false,
                 'choice_value' => 'id',
-                'label' => 'Employee Name :'
+                'label' => 'Employee Name :',
+                'placeholder'=>"Select Employee"
             ]
         );
-        $builder->add('submit',SubmitType::class);
     }
    
 

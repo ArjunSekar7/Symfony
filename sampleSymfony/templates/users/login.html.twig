@@ -1,21 +1,57 @@
 <html>
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; margin-top : 100px }
-    #user_mail_id { margin-left : 35px; margin-bottom:15px;}
-    #user_password { margin-left : 10px; margin-bottom:15px; }
-    .btn {  margin-left : 130px; background-color: black; color: white;padding: 7px 20px;text-align: center; text-decoration: none; font-size: 16px; cursor: pointer;}
-</style>
-<body>
+    <style>
+        .example-wrapper {
+            margin: 100px auto 1em;
+            max-width: 800px;
+            width: 95%;
+            font: 18px / 1.5 sans-serif;
+        }
+        #user_mail_id {
+            margin-left: 35px;
+            margin-bottom: 15px;
+        }
+        #user_password {
+            margin-left: 10px;
+            margin-bottom: 15px;
+        }
+        .btn {
+            margin-left: 130px;
+            background-color: black;
+            color: white;
+            padding: 7px 20px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .error_message {
+            color: red;
+        }
+        .register {
+            margin-left: 260px;
+        }
+        ul {
+            display: none;
+        }
+    </style>
+    <body>
 
-<div class="example-wrapper">
-    <h1>LoginPage</h1>
-        {{ form_start(form) }}
-            <h4 > {{ message }} </h4>
+        <div class="example-wrapper">
+            <h1>LoginPage</h1>
+            {% for error in form.vars.errors.form.getErrors(true) %}
+                <p style="color:red;">
+                    *{{ error.message }}</p>
+            {% endfor %}
+            {{ form_start(form) }}
+            <p class="error_message">
+                {{ message }}
+            </p>
             {{ form_widget(form) }}
             <button class="btn">{{ button_label|default('Login') }}</button>
-        {{ form_end(form) }}
-</div>
+            {{ form_end(form) }}
+            <a class="register" href={{path('register')}}>Register</a>
+        </div>
 
 
-</body>
+    </body>
 </html>

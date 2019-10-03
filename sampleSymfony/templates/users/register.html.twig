@@ -16,7 +16,11 @@
              <p style="color:red;"> * {{ error.message }}</p>
        {% endfor %}
       
-        {{ form(form) }}
+        {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <p class="field">* fields are required</p>
+            {{ form_end(form) }}
         
-        <a class="list" href={{path('view_user')}}>View List</a>
+        
+        <a class="list" href={{path('login')}}>Login</a>
 </div>

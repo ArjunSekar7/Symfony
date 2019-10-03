@@ -34,12 +34,12 @@ final class Version20190918115915 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-       /* $this->addSql('ALTER TABLE sub_category DROP FOREIGN KEY FK_BCE3F798C6C55574');
-        $this->addSql('ALTER TABLE product DROP FOREIGN KEY FK_D34A04ADF7BFE87C');
-        $this->addSql('DROP TABLE main_category');
-        $this->addSql('DROP TABLE user');
-        $this->addSql('DROP TABLE sub_category');
-        $this->addSql('DROP TABLE product');
-        $this->addSql('ALTER TABLE user_form CHANGE name name VARCHAR(100) NOT NULL COLLATE utf8mb4_unicode_ci, CHANGE email_id email_id VARCHAR(100) NOT NULL COLLATE utf8mb4_unicode_ci, CHANGE comments comments LONGTEXT DEFAULT NULL COLLATE utf8mb4_unicode_ci');*/
+    //     $this->addSql('ALTER TABLE sub_category DROP FOREIGN KEY FK_BCE3F798C6C55574');
+    //     $this->addSql('ALTER TABLE product DROP FOREIGN KEY FK_D34A04ADF7BFE87C');
+    //     $this->addSql('DROP TABLE main_category');
+    //     $this->addSql('DROP TABLE user');
+    //     $this->addSql('DROP TABLE sub_category');
+    //     $this->addSql('DROP TABLE product');
+    //     $this->addSql('ALTER TABLE user_form CHANGE name name VARCHAR(100) NOT NULL COLLATE utf8mb4_unicode_ci, CHANGE email_id email_id VARCHAR(100) NOT NULL COLLATE utf8mb4_unicode_ci, CHANGE comments comments LONGTEXT DEFAULT NULL COLLATE utf8mb4_unicode_ci');
     }
 }

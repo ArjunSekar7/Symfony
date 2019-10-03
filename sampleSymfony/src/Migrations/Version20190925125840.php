@@ -20,18 +20,18 @@ final class Version20190925125840 extends AbstractMigration
     public function up(Schema $schema) : void
     {
         // this up() migration is auto-generated, please modify it to your needs
-      /*  $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+       $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
         $this->addSql('ALTER TABLE user CHANGE password password VARCHAR(20) NOT NULL');
-        $this->addSql('ALTER TABLE projects ADD name VARCHAR(200) NOT NULL');*/
+        $this->addSql('ALTER TABLE projects ADD name VARCHAR(200) NOT NULL');
     }
 
     public function down(Schema $schema) : void
     {
         // this down() migration is auto-generated, please modify it to your needs
-    /*    $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
+    //    $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE projects DROP name');
-        $this->addSql('ALTER TABLE user CHANGE password password VARCHAR(255) NOT NULL COLLATE latin1_swedish_ci');*/
-    }
+    //     $this->addSql('ALTER TABLE projects DROP name');
+    //     $this->addSql('ALTER TABLE user CHANGE password password VARCHAR(255) NOT NULL COLLATE latin1_swedish_ci');
+     }
 }

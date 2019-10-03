@@ -22,10 +22,10 @@ class ProjectType extends AbstractType
                 'expanded' => false,
                 'multiple' => false,
                 'choice_value' => 'id',
-                'label' => 'Project List :'
+                'label' => 'Project List :',
+                'placeholder'=>"Select Project"
             ]
         );
-            $builder->add('submit',SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver)

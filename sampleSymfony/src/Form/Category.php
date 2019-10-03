@@ -21,9 +21,10 @@ class Category extends AbstractType
             ->add('name',EntityType::class,[
                 'class' => MainCategory::class,
                 'choice_label'=>function(MainCategory $mainCategory) {
-                return sprintf('%s', $mainCategory->getName());
+                    return sprintf('%s', $mainCategory->getName());
                 },
                 'label' => false,
+                'placeholder' => 'Select Category'
                 ]);
                       
             

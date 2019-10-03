@@ -7,10 +7,17 @@ App\Entity\UserForm:
 
     email_id:
       - Regex:
-          pattern: /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/
+          pattern: /^[a-z0-9]{3,}+(\.[a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/
           message: ' Please provide valid Email id'
 
     name:
       - Regex:
           pattern: /^[a-zA-Z]{2,}$/
           message: ' Please provide valid Name'
+
+App\Entity\User:
+  properties:
+    mail_id:
+      - Regex:
+          pattern: /^[a-z0-9]{3,}+(\.[a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/
+          message: ' Please provide valid Email id'

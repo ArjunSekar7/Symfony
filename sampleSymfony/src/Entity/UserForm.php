@@ -46,6 +46,11 @@ class UserForm
      */
     private $country;
 
+    /**
+     * @ORM\Column(type="string", length=200)
+     */
+    private $password;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -131,6 +136,18 @@ class UserForm
     public function setDateOfBirth(\DateTimeInterface $date_of_birth): self
     {
         $this->date_of_birth = $date_of_birth;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
 
         return $this;
     }

@@ -12,13 +12,36 @@ use App\Form\EmployeeType;
 use App\Form\ProjectType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
-
-
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class UserController extends AbstractController
 {
-    
+    public function mail($mailer, String $password)
+    {
+        $session = new Session();
+        $email = explode("@",$session->get('email'));
+        $message = (new \Swift_Message('Hello Email'))
+            ->setSubject('Verify mail')
+            ->setFrom('nujraadream112@gmail.com')
+            ->setTo($session->get('email'))
+            ->setBody(
+                $this->renderView(
+                    'users/sentmail.html.twig',
+                    [
+                        'name' => $email[0],
+                        'password' => $password
+                    ]
+                ),
+                'text/html'
+            );
+        if ($mailer->send($message)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function login(Request $request)
     {
         $user = new User;
@@ -27,18 +50,19 @@ class UserController extends AbstractController
         $message = '';
         if ($form->isSubmitted() && $form->isValid()) {
             $mailId = $form->get('mail_id')->getData();
-            $password = $form->get('password')->getData();
-            $user = $this->getDoctrine()->getRepository(User::class);
+            $verifyPassword = $form->get('password')->getData();
+            $user = $this->getDoctrine()->getRepository(UserForm::class);
             $check = $user->findOneBy(
-                array('mail_id' => $mailId)
+                array('email_id' => $mailId)
             );
             if ($check === null) {
                 $message = 'Invalid Mail';
             } else {
-                $verifyPassword = $check->getPassword();
-                $message = 'Enter valid email and password';
-                if (password_verify($password, $verifyPassword)) {
-                    $message = 'Login Successfull';
+
+                if ($check->getPassWord() == $verifyPassword) {
+                    return $this->redirect('/user/list/1');
+                } else {
+                    $message = 'Enter valid email and password';
                 }
             }
         }
@@ -48,7 +72,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    public function addUserDetails(Request $request)
+    public function addUserDetails(Request $request, \Swift_Mailer $mailer)
     {
         $userForm = new UserForm;
         $form = $this->createForm(AddUser::class, $userForm);
@@ -61,14 +85,20 @@ class UserController extends AbstractController
                 array('email_id' => $form->get('email_id')->getData())
             );
             if ($check === null) {
-                $comments = "null";
-                if ($form->get('comments')->getData()) {
-                    $comments = $form->get('comments')->getData();
-                }
-                $entityManager = $this->getDoctrine()->getManager();                
+                $password = explode("@",  $form->get('email_id')->getData());
+                $rand = (string) rand(5000, 9000);
+                $password = $password[0] . $rand;
+                $userForm->setPassword($password);
+                $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($userForm);
                 $entityManager->flush();
-                $flag = 2;
+                $session = new Session();
+                $session->set('email', $form->get('email_id')->getData());
+                if ($this->mail($mailer, $password)) {
+                    return $this->render('users/confirm.html.twig');
+                } else {
+                    return new Response("Error in Sending the Mail");
+                }
             } else {
                 $flag = 1;
             }
@@ -79,15 +109,25 @@ class UserController extends AbstractController
         ]);
     }
 
-    public function viewUser()
+    public function getDetails($page)
     {
-        $userList = $this->getDoctrine()->getRepository(UserForm::class)->findAll();
+        $list = $this->getDoctrine()
+            ->getRepository(UserForm::class)
+            ->getAllUserDetails($page);
+
+        $totalDetailsReturned = $list->getIterator()->count();
+        $totalList = $list->count();
+
+        $maxPages = ceil($totalList / $totalDetailsReturned);
+
         return $this->render('users/view.html.twig', [
-            'user' => $userList
+            'user' => $list,
+            'maxPages' => $maxPages,
+            'thisPage' => $page
         ]);
     }
 
-    public function updateAction($id, Request $request, ValidatorInterface $validator)
+    public function updateAction($id, Request $request)
     {
         $user = new UserForm;
         $entityManager = $this->getDoctrine()->getManager();
@@ -97,7 +137,7 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
-            return $this->redirectToRoute('view_user');
+            return $this->redirect('/user/list/1');
         }
         return $this->render('users/edit.html.twig', [
             'form' => $form->createView(),

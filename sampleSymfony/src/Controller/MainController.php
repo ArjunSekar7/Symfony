@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Entity\MainCategory;
 use App\Entity\Product;
 use App\Entity\SubCategory;
 use App\Form\Category;
@@ -14,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Ob\HighchartsBundle\Highcharts\Highchart;
 use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 class MainController extends AbstractController
 {
@@ -37,27 +36,6 @@ class MainController extends AbstractController
         ));
     }
 
-    public function mail(\Swift_Mailer $mailer)
-    {
-        $name = "Arjun";
-        $message = (new \Swift_Message('Hello Email'))
-            ->setFrom('nujraadream112@gmail.com')
-            ->setTo('arjun.sekar@aspiresys.com')
-            ->setBody(
-                $this->renderView(
-                    'users/registration.html.twig',
-                    ['name' => $name]
-                ),
-                'text/html'
-            );
-
-        if ($mailer->send($message)) {
-            echo "success";
-        } else {
-            echo "failure";
-        }
-        return new Response();
-    }
 
     public function getMainCategory(Request $request)
     {
@@ -93,10 +71,12 @@ class MainController extends AbstractController
             } else {
                 return new JsonResponse(
                     array(
-                        'status' => 'error',
-                        'message' => 'Invaild Id passed'
-                    ),
-                    500
+                        'error' => array(
+                            'errorCode' => 101,
+                            'errorMessage' => 'Invaild Id passed'
+                        ),
+                        'data' => null
+                    )
                 );
             }
             $idx = 0;
@@ -108,18 +88,22 @@ class MainController extends AbstractController
             }
             return new JsonResponse(
                 array(
-                    'status' => 'OK',
-                    'message' => $jsonData
-                ),
-                200
+                    'error' => array(
+                        'errorCode' => 201,
+                        'errorMessage' => 'OK'
+                    ),
+                    'data' => $jsonData
+                )
             );
         } else {
             return new JsonResponse(
                 array(
-                    'status' => 'error',
-                    'message' => 'Invalid request'
-                ),
-                500
+                    'error' => array(
+                        'errorCode' => 101,
+                        'errorMessage' => 'Invaild Request'
+                    ),
+                    'data' => null
+                )
             );
         }
     }
@@ -140,10 +124,12 @@ class MainController extends AbstractController
             } else {
                 return new JsonResponse(
                     array(
-                        'status' => 'error',
-                        'message' => 'Invaild Id passed'
-                    ),
-                    500
+                        'error' => array(
+                            'errorCode' => 101,
+                            'errorMessage' => 'Invaild Id passed'
+                        ),
+                        'data' => null
+                    )
                 );
             };;
 
@@ -156,18 +142,22 @@ class MainController extends AbstractController
             }
             return new JsonResponse(
                 array(
-                    'status' => 'OK',
-                    'message' => $jsonData
-                ),
-                200
+                    'error' => array(
+                        'errorCode' => 201,
+                        'errorMessage' => 'OK'
+                    ),
+                    'data' => $jsonData
+                )
             );
         } else {
             return new JsonResponse(
                 array(
-                    'status' => 'error',
-                    'message' => 'Invalid request'
-                ),
-                500
+                    'error' => array(
+                        'errorCode' => 101,
+                        'errorMessage' => 'Invaild Request'
+                    ),
+                    'data' => null
+                )
             );
         }
     }

@@ -1,0 +1,15 @@
+App\Entity\User:
+  properties:
+    email:
+      - Regex:
+          pattern: /^[a-z0-9]{3,}+(\.[a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/
+          message: ' Please provide valid Email id'
+
+App\Entity\UploadImage:
+  properties:
+      image:
+         - Image:
+             minWidth: 200
+             maxWidth: 400
+             minHeight: 200
+             maxHeight: 400

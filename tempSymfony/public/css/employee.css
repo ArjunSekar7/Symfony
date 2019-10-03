@@ -1,0 +1,19 @@
+table {  border-collapse: collapse;  width: 25%;}
+th, td {  text-align: left;  padding: 8px; }
+tr:nth-child(even){ background-color: #f2f2f2 }
+th {  background-color: #e73e1a;  color: white;}
+#employee_name { margin-left:20px; margin-bottom: 20px;}
+#project_name { margin-left:57px; margin-bottom: 20px; }
+.display { margin-top: 100 px;  margin-left:40px;   }
+.example-wrapper { 
+    margin:10px; 
+    margin :10px;
+}
+.emp_submit_btn{
+    margin-left: 320px;
+    margin-top: -50px;
+}
+.project_submit_btn{
+    margin-left: 300px;
+    margin-top: -50px;
+}

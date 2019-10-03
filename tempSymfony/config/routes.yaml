@@ -1,0 +1,12 @@
+  # index:
+  #  path: /
+  #  controller: App\Controller\MainController::index
+image:
+    path:       /userLogin
+    controller: App\Controller\UserController::login
+
+register:
+    path:       /userRegister  
+    controller: App\Controller\UserController::addUserDetails
+
+    

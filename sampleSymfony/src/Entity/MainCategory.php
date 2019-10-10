@@ -28,9 +28,16 @@ class MainCategory
      */
     private $sub_category_name;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="main_category")
+     */
+    private $Product;
+
+
     public function __construct()
     {
         $this->sub_category_name = new ArrayCollection();
+        $this->Product = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -58,26 +65,34 @@ class MainCategory
         return $this->sub_category_name;
     }
 
-    public function addSubCategoryName(SubCategory $subCategoryName): self
+    public function addSubCategoryName(SubCategory $subCategoryName)
     {
-        if (!$this->sub_category_name->contains($subCategoryName)) {
-            $this->sub_category_name[] = $subCategoryName;
-            $subCategoryName->setMainCategory($this);
-        }
-
-        return $this;
+        $subCategoryName->setMainCategory($this);
+        $this->sub_category_name->add($subCategoryName);
     }
 
-    public function removeSubCategoryName(SubCategory $subCategoryName): self
+    public function removeSubCategoryName(SubCategory $subCategoryName)
     {
-        if ($this->sub_category_name->contains($subCategoryName)) {
-            $this->sub_category_name->removeElement($subCategoryName);
-            // set the owning side to null (unless already changed)
-            if ($subCategoryName->getMainCategory() === $this) {
-                $subCategoryName->setMainCategory(null);
-            }
-        }
-
-        return $this;
+        $this->sub_category_name->removeElement($subCategoryName);
     }
+
+    /**
+     * @return Collection|Product[]
+     */
+    public function getProduct(): Collection
+    {
+        return $this->Product;
+    }
+
+    public function addProduct(Product $product)
+    {
+        $product->setMainCategory($this);
+        $this->Product->add($product);
+    }
+
+    public function removeProduct(Product $product)
+    {
+        $this->Product->removeElement($product);
+    }
+
 }

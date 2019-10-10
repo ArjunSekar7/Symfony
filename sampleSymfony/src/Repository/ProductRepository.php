@@ -47,4 +47,22 @@ class ProductRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByCategory($value)
+    {
+        $result = $this->createQueryBuilder('a')
+            ->andWhere('a.sub_category = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult();
+
+            $idx = 0;
+            foreach ($result as $mc) {
+                $jsonData[$idx++] = array(
+                    'id' => $mc->getId(),
+                    'name' => $mc->getProductName()
+                );
+            }
+        return $jsonData;
+    }
 }

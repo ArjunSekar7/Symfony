@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,6 +28,19 @@ class Product
      * @ORM\Column(type="string", length=255)
      */
     private $product_name;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\MainCategory", inversedBy="Product")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $main_category;
+
+  
+    public function __construct()
+    {
+        $this->category = new ArrayCollection();
+        $this->Product = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -55,4 +70,18 @@ class Product
 
         return $this;
     }
+
+    public function getMainCategory(): ?MainCategory
+    {
+        return $this->main_category;
+    }
+
+    public function setMainCategory(?MainCategory $main_category): self
+    {
+        $this->main_category = $main_category;
+
+        return $this;
+    }
+
+
 }

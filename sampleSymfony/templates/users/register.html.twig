@@ -1,26 +1,20 @@
 {% block stylesheets %}    
  <link href="{{ asset('css/register.css') }}" rel="stylesheet"/> 
+  <link href="{{ asset('css/commoncss.css') }}" rel="stylesheet"/> 
  {%endblock%}
 
 <div class="example-wrapper">
-    <center><h1>Registration Form</h1></center>
-        {% if flag == 1 %}
-           <h3 style="color:red;"> Email already Exist </h3>
-        {% endif %}
-
-        {% if flag ==2 %}
-            <h3 style="color:green;"> Registered Successfully </h3>
+    <h1>Registration</h1>
+        {% if message != null%}
+           <h3 class="error_msg"> {{ message }} </h3>
         {% endif %}
 
         {% for error in form.vars.errors.form.getErrors(true) %}
-             <p style="color:red;"> * {{ error.message }}</p>
+             <p class="error_msg"> * {{ error.message }}</p>
        {% endfor %}
       
         {{ form_start(form) }}
             {{ form_widget(form) }}
-            <p class="field">* fields are required</p>
+            <p class="error_msg">* fields are required</p>
             {{ form_end(form) }}
-        
-        
-        <a class="list" href={{path('login')}}>Login</a>
 </div>

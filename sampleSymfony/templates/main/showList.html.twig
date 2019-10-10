@@ -5,26 +5,15 @@
 {% endblock %}
 
 {% block stylesheets %}
-<link href="{{ asset('css/category.css') }}" rel="stylesheet"/>
+<link href="{{ asset('css/commoncss.css') }}" rel="stylesheet"/>
 {%endblock%}
-
 
 <div class="example-wrapper">
 
     <p>Select Main-Category</p>
-    {{ form_start(mainCategoryform) }}
-    {{ form_widget(mainCategoryform) }}
-    {{ form_end(mainCategoryform) }}
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
 
-    <p>Select Sub-Category</p>
-    {{ form_start(subCategoryform) }}
-    {{ form_widget(subCategoryform) }}
-    {{ form_end(subCategoryform) }}
-
-    <p>Select Product</p>
-    {{ form_start(productForm) }}
-    {{ form_widget(productForm) }}
-    {{ form_end(productForm) }}
-
-
+     
 </div>

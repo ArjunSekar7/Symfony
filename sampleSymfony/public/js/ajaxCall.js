@@ -1,25 +1,24 @@
-function ajaxCall(id, urlName, selectBox) {
-   if(id != 0){
+function ajaxCall(requestId, requestUrl, requestSelectBox) {
+   var errorMessage = "Ajax request failed";
    $.ajax({
-      url: urlName,
+      url: requestUrl,
       type: 'POST',
-      data: { id: id },
+      data: { id: requestId },
       dataType: 'json',
       async: true,
       success: function (data) {
          if ( data.error.errorCode == 201) {
-               $(selectBox).empty();
-               $(selectBox).append('<option value=' + 0 + '> Select </option>');
+               $(requestSelectBox).empty().append('<option value=' + 0 + '> Select </option>');
                $.each(data.data, function (key, value) {
-                  $(selectBox).append('<option value=' + value.id + '>' + value.name + '</option>');
+                  $(requestSelectBox).append('<option value=' + value.id + '>' + value.name + '</option>');
                });   
          } else {
-            alert("Ajax request failed");
+            alert(errorMessage);
          }
       },
       error: function (xhr, textStatus, errorThrown) {
-         alert('Alax request failed');
+         alert(errorMessage);
       }
    });
 }
-}
+

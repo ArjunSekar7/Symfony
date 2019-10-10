@@ -1,18 +1,10 @@
-<html>
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; margin-top : 100px }
-    table {  border-collapse: collapse;  width: 100%;}
-    th, td {  text-align: left;  padding: 8px; }
-    tr:nth-child(even){ background-color: #f2f2f2 }
-    th {  background-color: #000000;  color: white;}
-    ul#horizontal-list {min-width: 696px;list-style: none;padding-top: 20px;}
-    ul#horizontal-list li {display: inline;}
-    .page{ margin-left:300px; }
-</style>
-<body>
+{% block stylesheets %}
+<link href="{{ asset('css/register.css') }}" rel="stylesheet"/>
+{%endblock%}
 
-<div class="example-wrapper">
+<div class="main">
 <div align="right">
+    <a href={{path('logoutSession')}}>logout</a>
 </div>
 <center><h1> User List </h1></center>
     <table>
@@ -24,7 +16,7 @@
          <th>COUNTRY</th>
          <th>EDIT</th>
         </tr>
-        {%for u in user%}
+        {%for u in data.user%}
         <tr>
         <td> {{u.getName()|capitalize}} </td>
         <td>{{u.getEmailId()}}</td>
@@ -36,24 +28,22 @@
         {%endfor%}    
 </table><br>
 <div class="page">
-{% if maxPages > 1 %}
+{% if data.maxPages > 1 %}
 <ul id="horizontal-list">
-    <li {{ thisPage == 1 ? 'class="disabled"' }}>
-        <a href="{{ path('userlist', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+    <li {{ data.thisPage == 1 ? 'class="disabled"' }}>
+        <a href="{{ path('userlist', {page: data.thisPage-1 < 1 ? 1 : data.thisPage-1}) }}">«</a>
     </li>
 
-    {% for i in 1..maxPages %}
-    <li {{ thisPage == i ? 'class="active"' }}>
+    {% for i in 1..data.maxPages %}
+    <li {{ data.thisPage == i ? 'class="active"' }}>
     <a href="{{ path('userlist', {page: i}) }}">{{ i }}</a>
     </li>
     {% endfor %}
 
-    <li {{ thisPage == maxPages ? 'class="disabled"' }}>
-        <a href="{{ path('userlist', {page: thisPage <= maxPages ? thisPage : thisPage}) }}">»</a>
+    <li {{ data.thisPage == data.maxPages ? 'class="disabled"' }}>
+        <a href="{{ path('userlist', {page: data.thisPage <= data.maxPages ? data.thisPage : data.thisPage}) }}">»</a>
     </li>
 </ul>
 {% endif %}
 </div>
 </div>
-</body>
-</html>

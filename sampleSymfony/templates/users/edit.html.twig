@@ -6,9 +6,8 @@
    <center> <h1>User Form</h1> </center>
    
     {% for error in form.vars.errors.form.getErrors(true) %}
-    <p style="color:red;"> * {{ error.message }}</p>
+    <p class="error_msg"> * {{ error.message }}</p>
     {% endfor %}
-
         {{ form_start(form) }} 
             {{ form_widget(form) }}
         {{ form_end(form) }}

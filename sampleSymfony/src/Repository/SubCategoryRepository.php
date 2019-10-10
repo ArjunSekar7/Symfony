@@ -47,4 +47,23 @@ class SubCategoryRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findByCategory($value)
+    {
+        $result = $this->createQueryBuilder('a')
+            ->andWhere('a.mainCategory = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getResult();
+
+        $idx = 0;
+        foreach ($result as $mc) {
+            $jsonData[$idx++] = array(
+                'id' => $mc->getId(),
+                'name' => $mc->getSubCategoryName()
+            );
+        }
+
+        return $jsonData;
+    }
 }

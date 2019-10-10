@@ -7,7 +7,7 @@ lucky_number:
     controller: App\Controller\MainController::lucky
 
 find_max:
-    path:       /user/max/{max}
+    path:       /user/?max={max}
     controller: App\Controller\UserController::max
     methods:    GET|HEAD
 
@@ -17,15 +17,15 @@ login:
 
 register:
     path:       /userRegister  
-    controller: App\Controller\UserController::addUserDetails
+    controller: App\Controller\UserController::register
 
 update:
     path:       /update/{id} 
-    controller: App\Controller\UserController::updateAction
+    controller: App\Controller\UserController::update
 
 list:
     path:       /project 
-    controller: App\Controller\UserController::userRegister
+    controller: App\Controller\UserController::list
 
 getMainCategory:
     path:       /category 
@@ -45,4 +45,8 @@ chart:
 
 userlist:
     path:       /user/list/{page}/
-    controller: App\Controller\UserController::getDetails
+    controller: App\Controller\UserController::getUserDetails
+
+logoutSession:
+    path:       /userLogout
+    controller: App\Controller\UserController::logout

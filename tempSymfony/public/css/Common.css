@@ -1,0 +1,40 @@
+#thumb_table{
+    float: left;
+}
+#ori_img{
+    float: right;
+    margin: 100px 200px 0px 0px;
+}
+.example-wrapper {
+    margin: 100px auto 1em;
+    max-width: 800px;
+    width: 95%;
+    font: 18px / 1.5 sans-serif;
+}
+#user_email {
+    margin-left: 35px;
+    margin-bottom: 15px;
+}
+#user_password {
+    margin-left: 10px;
+    margin-bottom: 15px;
+}
+.btn {
+    margin-left: 130px;
+    background-color: black;
+    color: white;
+    padding: 7px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+.error_message {
+    color: red;
+}
+.register {
+    margin-left: 260px;
+}
+ul {
+    display: none;
+}

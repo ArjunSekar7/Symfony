@@ -6,6 +6,7 @@
 parameters:
     app.user_mail: 'arjun.sekar@aspiresys.com'
     image_directory: 'uploads/photos'
+    thumbnail_directory: 'uploads/thumbnail'
 
 services:
     # default configuration for services in *this* file

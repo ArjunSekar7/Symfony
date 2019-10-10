@@ -1,3 +1,13 @@
+{% block javascripts %}
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script src="{{ asset('js/image.js') }}"></script>
+{% endblock %}
+
+{% block stylesheets %}
+<link href="{{ asset('css/Common.css') }}" rel="stylesheet"/>
+{% endblock %}
+
 {{ form_start(form) }}
 {{ form_widget(form) }}
 {{ form_end(form) }}
+<img id="image_upload_preview" src="#" alt="your image" height="100" width="100"/>

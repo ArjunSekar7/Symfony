@@ -1,12 +1,25 @@
   # index:
   #  path: /
   #  controller: App\Controller\MainController::index
-image:
+
+login:
     path:       /userLogin
     controller: App\Controller\UserController::login
 
-register:
-    path:       /userRegister  
-    controller: App\Controller\UserController::addUserDetails
+image:
+    path:       /image
+    controller: App\Controller\UserController::imageUpload
+
+view:
+    path:       /view  
+    controller: App\Controller\UserController::view
+
+getImage:
+    path:       /getImage/{id} 
+    controller: App\Controller\UserController::getImage
+
+editImage:
+    path:       /editImage/{id} 
+    controller: App\Controller\UserController::editImage
 
     

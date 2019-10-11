@@ -4,10 +4,23 @@
 {% endblock %}
 
 {% block stylesheets %}
-<link href="{{ asset('css/Common.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/Common.css') }}" rel="stylesheet"/>
 {% endblock %}
 
+<div class="example-wrapper">
+<h2>Upload Files</h2>
+<p class="success_msg">{{ message }}</p>
+{% for error in form.vars.errors.form.getErrors(true) %}
+    <p class="error_msg">
+        *{{ error.message }}</p>
+{% endfor %}
+<div class="main">
 {{ form_start(form) }}
 {{ form_widget(form) }}
 {{ form_end(form) }}
-<img id="image_upload_preview" src="#" alt="your image" height="100" width="100"/>
+</div>
+<img id="image_upload_preview" src="{{ asset(data.getOrginalImagePath()) }}" alt="your preview image" height="100" width="100"/>
+<br>
+<p class="view_ref">View the upload image <a href="{{path('view')}}">click here..</a></p>
+</div>
+

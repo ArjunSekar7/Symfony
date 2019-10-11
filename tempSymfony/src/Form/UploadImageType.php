@@ -1,33 +1,44 @@
-<?php 
-
+<?php
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use App\Entity\UploadImage;
 
-class ImageUploadType extends AbstractType
+
+class UploadImageType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
+        $builder  
         ->add('orginal_image_path', FileType::class, [
-            'label' => 'Image (Jpeg file) : ',
-            'mapped' => false,
-            'required' => false,
+            'label' => 'Choose file to upload : ',
+            'required' => true,
             'constraints' => [
                 new File([
                     'maxSize' => '1024k',
                     'mimeTypes' => [
                         'image/jpeg',
-                    ],
-                    'mimeTypesMessage' => 'Please upload jpeg image ',
+                        'image/png',
+                     ],
+                    'mimeTypesMessage' => 'Please upload a valid image format',
                 ])
             ],
+        ])
+       ->add('submit',SubmitType::class)
+        ;
+    }
+   
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => UploadImage::class,
         ]);
-        $builder->add('Submit', SubmitType::class); 
-    ;
+    }
 }
-}
+
+?>

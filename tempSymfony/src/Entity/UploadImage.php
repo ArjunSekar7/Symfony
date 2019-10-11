@@ -8,6 +8,8 @@ class UploadImage
 
     private $thumbnail_path;
 
+    private $image;
+
     private $id;
 
     public function getOrginalImagePath(): ?string
@@ -38,4 +40,5 @@ class UploadImage
     {
         return $this->id;
     }
+
 }

@@ -11,7 +11,7 @@ function image(input) {
 
 $(document).ready(function () {
 
-      $("#image_upload_orginal_image_path").change(function () {
+      $("#upload_image_orginal_image_path").change(function () {
     image(this);
 });
 });

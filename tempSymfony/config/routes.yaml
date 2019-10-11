@@ -21,5 +21,8 @@ getImage:
 editImage:
     path:       /editImage/{id} 
     controller: App\Controller\UserController::editImage
+deleteImage:
+    path:       /deleteImage/{id} 
+    controller: App\Controller\UserController::deleteImage
 
     

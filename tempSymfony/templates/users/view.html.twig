@@ -2,21 +2,30 @@
 <link href="{{ asset('css/Common.css') }}" rel="stylesheet"/>
 {% endblock %}
 
+<a href="{{ path('image') }}"><img id="thumb" class="add_img" src="{{ asset('image/add.jpg') }}" width="50">
+            </a>
 <table id="thumb_table">
-    {% for list in listImage %}
+<tr>
+<th>Image</th>
+<th>Edit</th>
+<th>Delete</th>
+</tr>
+    {% for list in data["listImage"] %}
         <tr>
             <td><a href="{{ path('getImage',{'id':list.getId()}) }}"><img id="thumb" class="article-img" src="{{ asset(list.getThumbnailPath()) }}" >
             </a>
             </td>
             <td><a href="{{ path('editImage',{'id':list.getId()}) }}">Edit</a>
             </td>
+             <td><a href="{{ path('deleteImage',{'id':list.getId()}) }}">Delete</a>
+            </td>
         </tr>
     {% endfor %}
 </table>
 
-{% if image != null %}
+{% if data["image"] != null %}
 <div id="ori_img">
-<img class="article-img" src="{{ asset(image.getOrginalImagePath()) }}" onclick="image()" height="400" weight="400">
+<img class="article-img" src="{{ asset(data["image"].getOrginalImagePath()) }}" height="400" weight="400">
 </div>
 
 {% endif %}

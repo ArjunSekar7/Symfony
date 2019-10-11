@@ -4,10 +4,11 @@ namespace App\Controller;
 
 use App\Entity\UploadImage;
 use App\Entity\User;
-use App\Form\ImageUploadType;
 use App\Form\UserType;
 use Symfony\Component\HttpFoundation\Request;
 use App\Controller\BaseController;
+use App\Form\ImageUploadType;
+use App\Form\UploadImageType;
 use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends BaseController
@@ -56,23 +57,25 @@ class UserController extends BaseController
     public function imageUpload(Request $request)
     {
         $image = new UploadImage;
-        $message = $data = ' ';
-        $form = $this->createForm(ImageUploadType::class);
+        $message = $data = '';
+        $form = $this->createForm(UploadImageType::class, $image);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
             $entityManager = $this->getDoctrine()->getManager();
             $thumbnail = $orginalImage = $form->get('orginal_image_path')->getData();
-            $image->setThumbnailPath($this->makeThumbnail($thumbnail));
-            $fileName = $orginalImage->getClientOriginalName();
-            $orginalImage->move($this->getParameter('image_directory'), $fileName);
-            $filePath =  $this->getParameter('image_directory') . '/' . $fileName;
-            $image->setOrginalImagePath($filePath);
-            $entityManager->persist($image);
-            $entityManager->flush();
-            echo ($entityManager->flush()) ? $message =  BaseController::ERROR_UPLOAD : $message = BaseController::IMAGE_INFO ; 
+            if ($this->validateImage($orginalImage)) {
+                $image->setThumbnailPath($this->makeThumbnail($thumbnail));
+                $fileName = $this->changeFileName($orginalImage);
+                $orginalImage->move($this->getParameter('image_directory'), $fileName);
+                $filePath =  $this->getParameter('image_directory') . '/' . $fileName;
+                $image->setOrginalImagePath($filePath);
+                $entityManager->persist($image);
+                $entityManager->flush();
+                $message = BaseController::IMAGE_INFO;
+            }
         }
-        return $this->renderTemplate('users/UploadImage.html.twig', $form, $message, $data);
+        return $this->renderTemplate('users/UploadImage.html.twig', $form->createView(), $message, $image);
     }
 
     /**
@@ -84,10 +87,11 @@ class UserController extends BaseController
 
     public function view()
     {
-        return $this->render('users/view.html.twig', [
+        $data = array(
             "listImage" => $this->getThumbnailImage(),
-            "image" => null,
-        ]);
+            "image" => null
+        );
+        return $this->renderTemplate('users/view.html.twig', null, null, $data);
     }
 
     /**
@@ -103,10 +107,11 @@ class UserController extends BaseController
         $getImage = $this->getDoctrine()->getManager()->getRepository(UploadImage::class)->findOneBy(
             array('id' => $id)
         );
-        return $this->render('users/view.html.twig', array(
-            "image" => $getImage,
-            "listImage" => $this->getThumbnailImage()
-        ));
+        $data = array(
+            "listImage" => $this->getThumbnailImage(),
+            "image" => $getImage
+        );
+        return $this->renderTemplate('users/view.html.twig', null, null, $data);
     }
 
     /**
@@ -117,20 +122,20 @@ class UserController extends BaseController
      * return response to twig
      */
 
-    public function editImage($id,Request $request)
+    public function editImage($id, Request $request)
     {
         $entityManager = $this->getDoctrine()->getManager();
         $getImage = $entityManager->getRepository(UploadImage::class)->findOneBy(
             array('id' => $id)
         );
-
-        $form = $this->createForm(ImageUploadType::class);
+        $form = $this->createForm(UploadImageType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $this->unLink( $getImage);
             $thumbnail = $orginalImage = $form->get('orginal_image_path')->getData();
             $getImage->setThumbnailPath($this->makeThumbnail($thumbnail));
-            $fileName = $orginalImage->getClientOriginalName();
+            $fileName = $this->changeFileName($orginalImage);
             $orginalImage->move($this->getParameter('image_directory'), $fileName);
             $filePath =  $this->getParameter('image_directory') . '/' . $fileName;
             $getImage->setOrginalImagePath($filePath);
@@ -138,11 +143,30 @@ class UserController extends BaseController
             $entityManager->flush();
             return $this->redirect('/view');
         }
-
-        return $this->renderTemplate('users/UploadImage.html.twig', $form, null, null);
+        return $this->renderTemplate('users/UploadImage.html.twig', $form->createView(), null, $getImage);
     }
 
-     /**
+    /**
+     * Method to delete the original image based on id
+     * @param $id
+     * 
+     * 
+     * return response to twig
+     */
+
+    public function deleteImage($id)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $getImage = $entityManager->getRepository(UploadImage::class)->findOneBy(
+            array('id' => $id)
+        );
+        $this->unLink($getImage);
+        $entityManager->remove($getImage);
+        $entityManager->flush();
+        return $this->redirect('/view');
+    }
+
+    /**
      * Method to get all thumbnail image from database
      * 
      * return $image 
@@ -153,6 +177,4 @@ class UserController extends BaseController
         $image = $this->getDoctrine()->getRepository(UploadImage::class)->findAll();
         return $image;
     }
-
-
 }

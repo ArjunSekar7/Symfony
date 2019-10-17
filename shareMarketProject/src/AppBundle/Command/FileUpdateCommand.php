@@ -138,6 +138,13 @@ class FileUpdateCommand extends ContainerAwareCommand
         return $result[0]['id'];
     }
 
+    /**
+     * Method to check the vaild date
+     * @param $historyDate
+     * 
+     * @return Boolean
+     */
+
     public function checkHistoryDate($historyDate)
     {
         $result = ($historyDate === (date('Y-m-d', strtotime("-1 days")))) ? true : false;

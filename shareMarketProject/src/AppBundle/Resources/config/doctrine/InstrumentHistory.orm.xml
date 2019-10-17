@@ -1,0 +1,17 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\InstrumentHistory" table="instrument_history" repository-class="AppBundle\Entity\InstrumentHistoryRepository">
+  <id name="id" type="integer" column="id">
+    <generator strategy="AUTO" />
+    </id>
+     <many-to-one
+            field="instrumentId"
+            target-entity="Instrument"
+            inversed-by="id"
+            join-column="instrumentId">
+
+            <join-column name="instrument_Id" referenced-column-name="id" nullable="false"/>
+        </many-to-one>
+        <field name="date" type="date" nullable="false" />
+        <field name="historyValue" type="decimal" scale="2" precision="10" nullable="false"/>
+  </entity>
+</doctrine-mapping>

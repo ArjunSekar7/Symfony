@@ -1,0 +1,8 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+<entity name="AppBundle\Entity\Instrument" table="instrument" repository-class="AppBundle\Entity\InstrumentRepository">
+<id name="id" type="integer" column="id">
+</id>
+<field name="symbol" type="string" length="100" nullable="false" />
+<field name="fileName" type="string" length="200" nullable="false" column="file_name"/>
+</entity>
+</doctrine-mapping>
